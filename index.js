@@ -1,26 +1,60 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
-//const EmployeeSummary = require("EmployeeSummary");
 
-const Employee = require("./lib/Employee");
-const Manager = require("./Manager");
-const Intern = require("./Intern");
-const Engineer = require("./Engineer");
+const Manager = require("./lib/Manager");
+const Intern = require("./lib/Intern");
+const Engineer = require("./lib/Engineer");
 
 var teamArray = [];
 
-
-inquirer.prompt([{
-    type: "list",
-    message: "What is your role with this company?",
-    name: "role",
-    choices: ["Manager", "Engineer", "Intern"]
-}]).then(inquirerResponses => {
-    switch (inquirerResponses.role) {
-        case "Manager":
-            addManager();
-            break;
+function managerSignIn() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Welcome Manager! Please enter your name?",
+            name: "managerName",
+            validate: answer => {
+                if (answer !== "") {
+                    return true;
+                }
+                return "please enter at least one character";
+            }
+        }, {
+            type: "input",
+            message: "What is your manager Id??",
+            name: "managerId",
+        }, {
+            type: "input",
+            message: "What is your manager email?",
+            name: "managerEmail",
+            validate: answer => {
+                const pass = answer.match(/\S+@\S+\.\S+/);
+                if (pass) {
+                    return true;
+                }
+                return "please enter valid email address"
+            }
+        },
+        {
+            type: "input",
+            message: "What is your office number?",
+            name: "managerOfficeNumber",
+        }]).then(answers => {
+            const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+            teamArray.push(manager);
+            createTeam();
+        })
+}
+function createTeam(){
+    inquirer.prompt ([{
+        type: "list",
+        name: "memberType",
+        message: "What type of team member do you want to create?",
+        choices: ["Engineer", "Intern", "None"]
+    }])
+.then(inquirerResponses => {
+    switch (inquirerResponses.memberType) {
         case "Engineer":
             addEngineer();
             break;
@@ -28,10 +62,11 @@ inquirer.prompt([{
             addIntern();
             break;
         default:
-            // buildTeam();
+        // buildTeam();
     }
 
 })
+}
 
 function addEngineer() {
     inquirer.prompt([{
@@ -48,14 +83,14 @@ function addEngineer() {
         name: "engineerEmail",
         message: "What is your email Engineer?",
     }
-    ,{
+        , {
         type: "input",
         name: "engineerGithub",
         message: "What is your github Engineer?",
     }
     ]).then(answers => {
         const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
-        teamArray(engineer);
+        teamArray.push(engineer);
         console.log(teamArray)
     })
 }
@@ -75,16 +110,17 @@ function addIntern() {
         name: "internEmail",
         message: "What is your email Intern?",
     }
-    ,{
+        , {
         type: "input",
         name: "internSchool",
         message: "Where did you to school Intern?",
     }
     ]).then(answers => {
         const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
-        teamArray(intern);
+        teamArray.push(intern);
         console.log(teamArray)
     })
 }
 
+managerSignIn();
 
