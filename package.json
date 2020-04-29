@@ -21,6 +21,7 @@
   "dependencies": {
     "form-data": "^3.0.0",
     "inquirer": "^7.1.0",
-    "jest": "^25.5.0"
+    "jest": "^25.5.0",
+    "validator": "^13.0.0"
   }
 }
