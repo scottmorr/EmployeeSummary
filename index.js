@@ -1,7 +1,12 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
-//const validator = require("validator");
+const render = require("./lib/htmlRenderer");
+
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html")
+
+
 
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
@@ -79,7 +84,7 @@ function createTeam() {
                     addIntern();
                     break;
                 default:
-                // buildTeam();
+                buildTeam();
             }
 
         })
@@ -136,11 +141,7 @@ function addEngineer() {
          return "please enter valid email address"
      }
     
-    
-    
-    
-    
-    
+
     
     }
     ]).then(answers => {
@@ -206,6 +207,14 @@ function addIntern() {
         teamArray.push(intern);
         console.log(teamArray)
     })
+}
+function buildTeam () {
+    if(!fs.existSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+
+
+fs.writeFileSync(outputPath,render(teamArray),"utf-8")
 }
 
 managerSignIn();
