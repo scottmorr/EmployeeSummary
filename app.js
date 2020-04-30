@@ -148,6 +148,7 @@ function addEngineer() {
         const engineer = new Engineer(answers.engineerName, answers.engineerId, answers.engineerEmail, answers.engineerGithub)
         teamArray.push(engineer);
         console.log(teamArray)
+        buildTeam();
     })
 }
 
@@ -205,11 +206,12 @@ function addIntern() {
     ]).then(answers => {
         const intern = new Intern(answers.internName, answers.internId, answers.internEmail, answers.internSchool)
         teamArray.push(intern);
-        console.log(teamArray)
+        console.log(teamArray);
+        buildTeam();
     })
 }
 function buildTeam () {
-    if(!fs.existSync(OUTPUT_DIR)) {
+    if(!fs.existsSync(OUTPUT_DIR)) {
         fs.mkdirSync(OUTPUT_DIR)
     }
 
@@ -218,4 +220,5 @@ fs.writeFileSync(outputPath,render(teamArray),"utf-8")
 }
 
 managerSignIn();
+
 
