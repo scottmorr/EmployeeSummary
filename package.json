@@ -23,6 +23,6 @@
     "inquirer": "^7.1.0",
     "jest": "^25.5.0",
     "renderer": "^0.1.5",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   }
 }
